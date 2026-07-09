@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>E-Portfolio - นางสาวฎายิน ลีลา</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- SweetAlert2 -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  
+  <style>
+    /* CSS Variables สำหรับรองรับธีมที่เปลี่ยนแปลงได้จริง */
+    :root {
+      --web-bg-color: #f8f9fa;
+      --app-bg: #ffffff;
+      --bg-img-url: none;
+      --bg-img-opacity: 1;
+      --header-bg-custom: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      --header-text-color: #343a40;
+      --footer-bg-custom: #f8f9fa;
+      --container-max-width: 1600px;
+      --container-width-pct: 100%;
+      
+      --body-font-size: 14px;
+      --footer-font-size: 11px;
+      --content-title-font-size: 18px;
+      --content-body-font-size: 14px;
+      --link-font-size: 14px;
+      --menu-font-size: 14px;
+      
+      --color-body: #343a40;
+      --color-footer: #6c757d;
+      --color-title: #343a40;
+      --color-content-body: #333333;
+      --color-link: #343a40;  //สีลิงก์
+      --color-hover: #0056b3;
+      --menu-bg-color: #ffffff;
+      --menu-text-color: #333333;
+      
+      --main-img-height: 550px;
+      --bottom-img-height: 500px;
+      --font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-family);
+      font-size: var(--body-font-size);
+      color: var(--color-body);
+      background-color: var(--web-bg-color);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* พื้นหลังแบบปรับระดับความโปร่งใส */
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: var(--bg-img-url);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: var(--bg-img-opacity);
+      z-index: -2;
+    }
+
+    /* กล่องแอปพลิเคชันคุมความกว้างไม่เกิน 1600px */
+    .app-container {
+      max-width: var(--container-max-width);
+      width: var(--container-width-pct);
+      margin: 0 auto;
+      background-color: var(--app-bg);
+      min-height: 100vh;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ส่วนหัว (Header) แบบไล่เฉดสี */
+    header {
+      background: var(--header-bg-custom);
+      color: var(--header-text-color);
+      border-bottom: 1px solid #dee2e6;
+      padding: 20px;
+    }
+
+    /* โลโก้โปร่งใส (Transparent 100%) และอยู่ชั้นบนสุด */
+    .logo-container {
+      position: relative;
+      z-index: 1000;
+      flex-shrink: 0;
+    }
+    .logo-img {
+      width: 85px;
+      height: 85px;
+      object-fit: contain;
+      mix-blend-mode: multiply; /* ขจัดพื้นหลังสีขาวของภาพต้นฉบับออก */
+      transition: transform 0.2s ease-in-out;
+    }
+    .logo-img:hover {
+      transform: scale(1.05);
+    }
+
+    /* เมนูด้านซ้ายกว้าง 250px */
+    .sidebar-menu {
+      width: 250px;
+      flex-shrink: 0;
+      border-right: 1px solid #dee2e6;
+      background-color: var(--menu-bg-color);
+      color: var(--menu-text-color);
+    }
+    .sidebar-menu a {
+      font-size: var(--menu-font-size);
+      color: var(--menu-text-color);
+      text-decoration: none;
+      display: block;
+      padding: 5px 10px;
+      transition: all 0.2s ease-in-out;
+    }
+    .sidebar-menu a:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      padding-left: 15px;
+      transform: scale(1.02);
+    }
+
+    /* เอฟเฟกต์การย่อขยายเมื่อวางเมาส์ (Hover Scaling) */
+    .img-hover-expand {
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .img-hover-expand:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+    }
+
+    .link-hover-expand {
+      display: inline-block;
+      transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+    .link-hover-expand:hover {
+      transform: scale(1.04);
+      color: var(--color-hover) !important;
+    }
+
+    .card-hover-expand {
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .card-hover-expand:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+    }
+
+    .ext-link {
+      font-size: var(--link-font-size);
+      color: var(--color-link) !important;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 0;
+    }
+
+    /* ตารางโพสต์หลักแบบ 5 คอลัมน์ (Compact Grid) */
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 200px));
+      gap: 15px;
+      justify-content: start;
+      align-content: start;
+    }
+    .post-card {
+      width: 200px;
+      background: #fff;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .post-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .post-card-body {
+      padding: 10px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* รูปแบบการจัดวางข้อมูลรายละเอียดเนื้อหาแบบเต็มจอ */
+    .post-detail {
+      padding: 0 150px;
+      text-align: left;
+    }
+    .post-detail h2 {
+      font-size: var(--content-title-font-size);
+      font-weight: bold;
+      color: var(--color-title);
+    }
+    .post-detail .post-body {
+      font-size: var(--content-body-font-size);
+      color: var(--color-content-body);
+    }
+    .post-detail img.main-post-img {
+      width: 80%;
+      max-height: var(--main-img-height);
+      object-fit: contain;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    /* รูปภาพท้ายเนื้อหา (จัดวางตรงกลาง, เรียงแนวนอน, มีระยะห่าง 10px, ปรับขนาดความกว้างตามสัดส่วนเดิม สูงไม่เกิน 500px, ไม่มีพื้นหลัง, ใส่เงาและตัดมุมมน) */
+    .bottom-images-list {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px; /* ปรับเป็น 10px ตามที่ระบุ */
+      margin-top: 15px;
+    }
+    .bottom-images-list img {
+      max-height: var(--bottom-img-height); /* สูงไม่เกิน 500px */
+      width: auto;
+      max-width: 100%; /* ปรับขนาดให้พอดีกับความกว้างอัตโนมัติ */
+      object-fit: contain; /* แสดงภาพตามสัดส่วนเดิม */
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12); /* ใส่เงา */
+      border-radius: 8px; /* ตัดมุมมน */
+      background: none; /* ไม่มีพื้นหลังหลังภาพ */
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+    .bottom-images-list img:hover {
+      transform: scale(1.03);
+    }
+
+    .login-gear-btn {
+      cursor: pointer;
+      color: var(--color-footer);
+      transition: transform 0.3s, scale 0.2s;
+    }
+    .login-gear-btn:hover {
+      transform: rotate(45deg) scale(1.1);
+    }
+
+    footer {
+      background-color: var(--footer-bg-custom);
+      color: var(--color-footer);
+      font-size: var(--footer-font-size);
+      border-top: 1px solid #dee2e6;
+    }
+  </style>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&family=Sarabun&family=Prompt&family=Mitr&family=Noto+Sans+Thai&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="bg-overlay"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="d-flex align-items-center gap-3">
+      <div class="logo-container">
+        <img class="logo-img" src="https://swsk.ac.th/2025/wp-content/uploads/2025/07/swsklogo.png" alt="Logo">
+      </div>
+      <div>
+        <h1 style="font-size: 22px; font-weight: bold; margin: 0;">E-Portfolio</h1>
+        <h2 style="font-size: 15px; font-weight: normal; margin: 3px 0 0 0;">นางสาวฎายิน  ลีลา ครู วิทยฐานะครูชำนาญการพิเศษ  กลุ่มสาระการเรียนรู้วิทยาศาสตร์และเทคโนโลยี</h2>
+        <h3 style="font-size: 13px; font-weight: normal; margin: 3px 0 0 0; opacity: 0.85;">โรงเรียนเฉลิมพระเกียรติสมเด็จพระศรีนครินทร์ ศรีสะเกษ ในพระราชูปถัมภ์สมเด็จพระเทพรัตนราชสุดาฯ สยามบรมราชกุมารี</h3>
+      </div>
+    </header>
+
+    <div class="d-flex flex-grow-1">
+      <!-- Sidebar Menu -->
+      <div class="sidebar-menu p-3 d-flex flex-column justify-content-between">
+        <div>
+          <!-- ซ่อนไว้ก่อน 
+          <h6 class="text-uppercase fw-bold text-muted small px-3 mb-2">เมนูหลัก</h6>
+          <a href="#" onclick="showHome()"><i class="bi bi-house-door me-2"></i>หน้าแรก</a>
+          -->
+          
+          <h6 class="text-uppercase fw-bold text-muted small px-3 mt-4 mb-2">เมนูหลัก</h6>   <!-- เมนูหลัก -->
+          <div id="sidebar-categories">
+            <!-- โหลดหมวดหมู่จาก Firestore -->
+          </div>
+
+          <h6 class="text-uppercase fw-bold text-muted small px-3 mt-4 mb-2">ลิงก์ภายนอก</h6>
+          <div id="sidebar-links" class="px-3">
+            <!-- โหลดลิงก์ภายนอก -->
+          </div>
+        </div>
+
+        <div>
+          <!-- แผงควบคุมระบบสำหรับผู้ใช้ที่ล็อกอิน -->
+          <div id="admin-menu-section" style="display: none;">
+            <hr>
+            <a href="#" onclick="showAdmin()" class="text-danger fw-bold link-hover-expand"><i class="bi bi-shield-lock me-2"></i>ระบบจัดการระบบ</a>
+            <a href="#" onclick="logout()" class="text-muted"><i class="bi bi-box-arrow-right me-2"></i>ออกจากระบบ</a>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+            <span class="small text-muted" id="auth-status-txt">เวอร์ชัน 1.0</span>
+            <i class="bi bi-gear-fill login-gear-btn" onclick="openLoginModal()" title="แผงควบคุมระบบ"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Section -->
+      <main class="flex-grow-1 p-4 bg-white" style="min-width: 0;">
+        
+        <!-- ================= View: HOME (หน้าหลักผู้ใช้) ================= -->
+        <div id="view-home">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h6 id="category-title" class="fw-bold mb-0"><i class="i bi-house-door me-2"></i>ครูฎายิน ลีลา</h6>
+            <div id="home-pagination" class="d-flex gap-2"></div>
+          </div>
+          <div id="home-posts" class="post-grid">
+            <!-- จัดวาง Grid 5 คอลัมน์ 3 แถว -->
+          </div>
+        </div>
+
+        <!-- ================= View: Post Detail (พรีวิวหน้าเนื้อหาแบบเต็ม) ================= -->
+        <div id="view-post-detail" class="post-detail" style="display: none;">
+          <button class="btn btn-outline-secondary btn-sm mb-4" onclick="showHome()"><i class="bi bi-arrow-left me-1"></i>ย้อนกลับ</button>
+          
+          <div id="detail-admin-actions" class="mb-3" style="display: none;">
+            <button class="btn btn-dark btn-sm" id="btn-edit-post-shortcut"><i class="bi bi-pencil-square me-1"></i>แก้ไขหน้านี้</button>
+          </div>
+
+          <div id="detail-image-wrapper"></div>
+          <h2 id="detail-title"></h2>
+          <span class="text-muted small d-block mb-3" id="detail-meta"></span>
+          <br>
+          <div class="post-body mt-2" id="detail-body"></div>
+
+          <!-- รูปภาพเพิ่มเติมท้ายเนื้อหา (จัดวางเซ็นเตอร์ และไม่มีพื้นหลัง) -->
+          <h5 class="fw-bold mt-5 mb-3 text-center" id="lbl-gallery" style="display: none;"> </h5>
+          <div class="bottom-images-list" id="detail-bottom-images"></div>
+
+          <!-- ลิงก์อ้างอิงเพิ่มเติม -->
+          <div class="mt-5 pt-3 border-top" id="detail-refs-section" style="display: none;">
+            <h6 class="fw-bold"><i class="bi bi-link-45deg"></i> ลิงก์เพิ่มเติม:</h6>
+            <ul id="detail-refs" class="list-unstyled"></ul>
+          </div>
+        </div>
+
+        <!-- ================= View: ADMIN PANEL ================= -->
+        <div id="view-admin" style="display: none;">
+          <h4 class="fw-bold mb-4 border-bottom pb-2"><i class="bi bi-shield-lock-fill me-2"></i>จัดการหลังบ้าน (Admin Console)</h4>
+          
+          <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+            <li class="nav-item">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-posts">เนื้อหา</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-categories">หมวดหมู่</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-links">ลิงก์ภายนอก</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-customize">ปรับแต่งเว็บไซต์</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-backup">นำเข้า / ส่งออกข้อมูล</button>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- แท็บจัดการเนื้อหาหลัก (Posts Management - สูงสุด 10 โพสต์) -->
+            <div class="tab-pane fade show active" id="tab-posts">
+              <div class="row">
+                <div class="col-md-5">
+                  <h6 class="fw-bold border-bottom pb-2">เขียน / แก้ไขเนื้อหา <span class="text-muted small">(กรอกไม่ครบก็บันทึกได้)</span></h6>
+                  <form id="form-post">
+                    <input type="hidden" id="post-id">
+                    <div class="mb-2">
+                      <label class="form-label small mb-1 fw-medium">ชื่อเรื่อง</label>
+                      <input type="text" class="form-control" id="post-title" placeholder="พิมพ์หัวข้อเรื่อง">
+                    </div>
+                    <div class="mb-2">
+                      <label class="form-label small mb-1 fw-medium">ข้อความหลัก</label>
+                      <textarea class="form-control" id="post-body" rows="6" placeholder="พิมพ์เนื้อหารายละเอียด..."></textarea>
+                    </div>
+                    <div class="mb-2">
+                      <label class="form-label small mb-1 fw-medium">URL รูปภาพหลัก (แสดงบนข้อความ)</label>
+                      <input type="url" class="form-control" id="post-top-image" placeholder="https://example.com/main-image.jpg">
+                    </div>
+                    
+                    <!-- ส่วนป้อน URL ภาพปิดท้ายเนื้อหาแยกช่องอิสระ -->
+                    <div class="mb-2">
+                      <label class="form-label small mb-1 fw-medium d-flex justify-content-between align-items-center">
+                        <span>URL รูปภาพปิดท้ายเนื้อหา (แยกช่องอิสระ)</span>
+                        <button type="button" class="btn btn-dark btn-sm px-2 py-0" onclick="addBottomImageInput()"><i class="bi bi-plus-lg"></i></button>
+                      </label>
+                      <div id="post-bottom-images-container"></div>
+                    </div>
+
+                    <!-- ส่วนป้อนลิงก์อ้างอิงเพิ่มเติมแยกช่อง -->
+                    <div class="mb-2">
+                      <label class="form-label small mb-1 fw-medium d-flex justify-content-between align-items-center">
+                        <span>ลิงก์อ้างอิงเพิ่มเติม (ใส่ URL)</span>
+                        <button type="button" class="btn btn-dark btn-sm px-2 py-0" onclick="addRefInput()"><i class="bi bi-plus-lg"></i></button>
+                      </label>
+                      <div id="post-refs-container"></div>
+                    </div>
+
+                    <div class="mb-2">
+                      <label class="form-label small mb-1 fw-medium">หมวดหมู่เนื้อหา (เลือกได้หลายช่องด้วย Checkbox)</label>
+                      <div id="post-category-checkboxes" class="border p-2 rounded" style="max-height: 120px; overflow-y: auto;">
+                        <!-- Checkbox สำหรับเลือกหลายประเภทของหมวดหมู่ -->
+                      </div>
+                    </div>
+
+                    <div class="mb-3 d-flex gap-3">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="post-visible" checked>
+                        <label class="form-check-label small" for="post-visible">แสดงบนหน้าเว็บหลัก</label>
+                      </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                      <button type="button" class="btn btn-dark flex-grow-1" onclick="savePost()">บันทึกข้อมูลหลัก</button>
+                      <button type="button" class="btn btn-outline-secondary" onclick="resetPostForm()">ล้างฟอร์ม</button>
+                    </div>
+                  </form>
+                </div>
+                
+                <div class="col-md-7 border-start">
+                  <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                    <h6 class="fw-bold mb-0">รายการเนื้อหาทั้งหมด (จัดหน้าละ 10 เรื่อง)</h6>
+                    <div id="admin-post-pagination" class="d-flex gap-1"></div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-striped align-middle">
+                      <thead>
+                        <tr>
+                          <th>ลำดับ</th>
+                          <th>ชื่อเรื่อง</th>
+                          <th>แสดง</th>
+                          <th>สลับลำดับ</th>
+                          <th>ตัวเลือก</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbl-admin-posts"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- แท็บหมวดหมู่ (Categories) -->
+            <div class="tab-pane fade" id="tab-categories">
+              <div class="row">
+                <div class="col-md-5">
+                  <h6 class="fw-bold border-bottom pb-2">เพิ่ม / แก้ไขหมวดหมู่</h6>
+                  <form id="form-category">
+                    <input type="hidden" id="category-id">
+                    <div class="mb-3">
+                      <label class="form-label small mb-1">ชื่อหมวดหมู่</label>
+                      <input type="text" class="form-control" id="category-name" required placeholder="เช่น ผลงานครู, รางวัลที่ได้รับ">
+                    </div>
+                    <div class="d-flex gap-2">
+                      <button type="button" class="btn btn-dark flex-grow-1" onclick="saveCategory()">บันทึก</button>
+                      <button type="button" class="btn btn-outline-secondary" onclick="resetCategoryForm()">ล้าง</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-7 border-start">
+                  <h6 class="fw-bold border-bottom pb-2">รายการหมวดหมู่ในระบบ</h6>
+                  <table class="table table-sm table-striped align-middle">
+                    <thead>
+                      <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อหมวดหมู่</th>
+                        <th>จัดการลำดับ</th>
+                        <th>จัดการข้อมูล</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbl-admin-categories"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- แท็บลิงก์ภายนอก (Links) -->
+            <div class="tab-pane fade" id="tab-links">
+              <div class="row">
+                <div class="col-md-5">
+                  <h6 class="fw-bold border-bottom pb-2">เพิ่ม / แก้ไขลิงก์ภายนอก</h6>
+                  <form id="form-link">
+                    <input type="hidden" id="link-id">
+                    <div class="mb-2">
+                      <label class="form-label small mb-1">ชื่อลิงก์ภายนอก</label>
+                      <input type="text" class="form-control" id="link-name" required placeholder="เช่น เว็บไซต์ สพฐ.">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label small mb-1">URL ปลายทาง</label>
+                      <input type="url" class="form-control" id="link-url" required placeholder="https://">
+                    </div>
+                    <div class="d-flex gap-2">
+                      <button type="button" class="btn btn-dark flex-grow-1" onclick="saveLink()">บันทึก</button>
+                      <button type="button" class="btn btn-outline-secondary" onclick="resetLinkForm()">ล้าง</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-7 border-start">
+                  <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                    <h6 class="fw-bold mb-0">รายการลิงก์ภายนอก (เรียงจาก A-Z)</h6>
+                    <div id="admin-link-pagination" class="d-flex gap-1"></div>
+                  </div>
+                  <table class="table table-sm table-striped align-middle">
+                    <thead>
+                      <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อของลิงก์</th>
+                        <th>จัดการลำดับ</th>
+                        <th>จัดการข้อมูล</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbl-admin-links"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- แท็บปรับแต่งเว็บไซต์ (Customize) -->
+            <div class="tab-pane fade" id="tab-customize">
+              <h6 class="fw-bold border-bottom pb-2">พารามิเตอร์ตกแต่งแบบพรีวิว Real-Time</h6>
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">รูปแบบฟอนต์หลัก</label>
+                  <select class="form-select form-select-sm" id="cust-font-family" onchange="previewTheme()">
+                    <option value="Kanit">Kanit</option>
+                    <option value="Sarabun">Sarabun</option>
+                    <option value="Prompt">Prompt</option>
+                    <option value="Mitr">Mitr</option>
+                    <option value="Noto Sans Thai">Noto Sans Thai</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">สัดส่วนความกว้าง (%)</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-width-pct" oninput="previewTheme()" min="50" max="100">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">กว้างสูงสุดของเว็บ (px)</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-max-width" oninput="previewTheme()" max="2000">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">URL รูปพื้นหลังหลักเว็บ</label>
+                  <input type="text" class="form-control form-control-sm" id="cust-bg-img" oninput="previewTheme()">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">ระดับความทึบภาพ (0 - 1)</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-bg-opacity" oninput="previewTheme()" step="0.1" min="0" max="1">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">สีพื้นหลังหน้าเว็บ</label>
+                  <input type="color" class="form-control form-control-sm" id="cust-web-bg" onchange="previewTheme()">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">สีพื้นหลัง Sidebar</label>
+                  <input type="color" class="form-control form-control-sm" id="cust-menu-bg" onchange="previewTheme()">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">สีตัวอักษร Sidebar</label>
+                  <input type="color" class="form-control form-control-sm" id="cust-menu-text" onchange="previewTheme()">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">สีป้ายส่วนหัวเว็บ</label>
+                  <input type="color" class="form-control form-control-sm" id="cust-header-color" onchange="previewTheme()">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">สีพื้นหลัง Footer</label>
+                  <input type="color" class="form-control form-control-sm" id="cust-footer-bg" onchange="previewTheme()">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">สีอักษร Footer</label>
+                  <input type="color" class="form-control form-control-sm" id="cust-footer-text" onchange="previewTheme()">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small mb-1">สี Hover เมนู/ลิงก์</label>
+                  <input type="color" class="form-control form-control-sm" id="cust-hover" onchange="previewTheme()">
+                </div>
+
+                <div class="col-12 mt-4">
+                  <h6 class="fw-bold border-bottom pb-1 small">ขนาดตัวอักษร (px)</h6>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">ตัวหลัก (Body)</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-size-body" oninput="previewTheme()">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">หัวข้อหลักเนื้อหา</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-size-title" oninput="previewTheme()">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">ตัวข้อความเต็ม</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-size-detail" oninput="previewTheme()">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">ลิงก์ภายนอก</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-size-link" oninput="previewTheme()">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">แถบเมนูข้าง</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-size-menu" oninput="previewTheme()">
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label small mb-1">ส่วนล่าง (Footer)</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-size-footer" oninput="previewTheme()">
+                </div>
+
+                <div class="col-12 mt-4">
+                  <h6 class="fw-bold border-bottom pb-1 small">ความสูงของรูปภาพสูงสุด (px)</h6>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small mb-1">ภาพหลักเนื้อหา (ค่าเริ่มต้น 550px)</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-height-main" oninput="previewTheme()">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small mb-1">ภาพปิดท้ายเนื้อหา (ค่าเริ่มต้น 500px)</label>
+                  <input type="number" class="form-control form-control-sm" id="cust-height-bottom" oninput="previewTheme()">
+                </div>
+
+                <div class="col-12 mt-4 d-flex gap-3">
+                  <button type="button" class="btn btn-dark hover-zoom" onclick="saveThemeSettings()"><i class="bi bi-save me-1"></i>บันทึกการตั้งค่า</button>
+                  <button type="button" class="btn btn-outline-danger hover-zoom" onclick="resetThemeToDefault()"><i class="bi bi-arrow-counterclockwise me-1"></i>คืนค่าเริ่มต้น</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- แท็บ Backup CSV -->
+            <div class="tab-pane fade" id="tab-backup">
+              <h6 class="fw-bold border-bottom pb-2">ระบบส่งออก / นำเข้าข้อมูลระบบด้วย CSV (UTF-8 with BOM)</h6>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="card p-3">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-download"></i> ส่งออกข้อมูลเป็น CSV</h6>
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-dark btn-sm hover-zoom" onclick="exportDataToCSV('posts')">ส่งออกข้อมูล "เนื้อหาทั้งหมด"</button>
+                      <button class="btn btn-dark btn-sm hover-zoom" onclick="exportDataToCSV('categories')">ส่งออกข้อมูล "หมวดหมู่ทั้งหมด"</button>
+                      <button class="btn btn-dark btn-sm hover-zoom" onclick="exportDataToCSV('links')">ส่งออกข้อมูล "ลิงก์ภายนอกทั้งหมด"</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card p-3">
+                    <h6 class="fw-bold mb-2"><i class="bi bi-upload"></i> นำเข้าข้อมูลด้วย CSV</h6>
+                    <div class="mb-3">
+                      <label class="form-label small">ประเภทชุดข้อมูลหลัก</label>
+                      <select class="form-select form-select-sm" id="import-type">
+                        <option value="posts">เนื้อหาทั้งหมด (Posts)</option>
+                        <option value="categories">หมวดหมู่ทั้งหมด (Categories)</option>
+                        <option value="links">ลิงก์ภายนอกทั้งหมด (Links)</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <input class="form-control form-control-sm" type="file" id="import-file-input" accept=".csv">
+                    </div>
+                    <button class="btn btn-danger btn-sm w-100 hover-zoom" onclick="importCSVData()">เริ่มต้นกระบวนการนำเข้า</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-3">
+      © 2026 E-Portfolio Dayin Leela : นางสาวฎายิน ลีลา โรงเรียนเฉลิมพระเกียรติสมเด็จพระศรีนครินทร์ ศรีสะเกษ. All Rights Reserved.
+    </footer>
+  </div>
+
+  <!-- Firebase Integration -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    // -------------------------------------------------------------------------
+    // Firebase Config
+    // -------------------------------------------------------------------------
+    const firebaseConfig = {
+      apiKey: "AIzaSyANt9p5BeGku8zFZ5OGFVMwDL75RMlHfm8",
+      authDomain: "e-portfolio-v4.firebaseapp.com",
+      projectId: "e-portfolio-v4",
+      storageBucket: "e-portfolio-v4.firebasestorage.app",
+      messagingSenderId: "534511589466",
+      appId: "1:534511589466:web:dcaec966a65c0a9a732063",
+      measurementId: "G-CLFFZ75N5Y"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // -------------------------------------------------------------------------
+    // App State
+    // -------------------------------------------------------------------------
+    let categories = [];
+    let posts = [];
+    let links = [];
+    let currentTheme = {};
+
+    let selectedCategoryId = null; 
+    let currentPostViewId = null;
+
+    // Pagination (คุมการเปลี่ยนหน้า 15 รายการ และหลังบ้าน 10 รายการ)
+    let homeCurrentPage = 1;
+    const homeItemsPerPage = 15; 
+    let adminPostCurrentPage = 1;
+    let adminLinkCurrentPage = 1;
+    const adminItemsPerPage = 10; // แสดง 10 เรื่องในตารางแอดมินตามข้อกำหนด
+
+    const defaultSettings = {
+      webBgColor: "#f8f9fa",
+      menuBgColor: "#ffffff",
+      menuTextColor: "#333333",
+      headerTextColor: "#343a40",
+      footerBg: "#f8f9fa",
+      footerTextColor: "#6c757d",
+      hoverColor: "#0056b3",
+      widthPct: "100",
+      maxWidth: "1600",
+      bgImg: "",
+      bgOpacity: "1",
+      sizeBody: "14",
+      sizeTitle: "18",
+      sizeDetail: "14",
+      sizeLink: "14",
+      sizeMenu: "14",
+      sizeFooter: "11",
+      heightMain: "550",
+      heightBottom: "500",
+      fontFamily: "Kanit"
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          document.getElementById('admin-menu-section').style.display = 'block';
+          document.getElementById('auth-status-txt').innerText = "ผู้ดูแลระบบ: แอดมิน";
+          document.getElementById('detail-admin-actions').style.display = 'block';
+        } else {
+          document.getElementById('admin-menu-section').style.display = 'none';
+          document.getElementById('auth-status-txt').innerText = "บุคคลทั่วไป";
+          document.getElementById('detail-admin-actions').style.display = 'none';
+          if (document.getElementById('view-admin').style.display === 'block') {
+            showHome();
+          }
+        }
+        renderHomePosts();
+      });
+
+      loadThemeSettings();
+      listenToDatabase();
+    });
+
+    // -------------------------------------------------------------------------
+    // Real-time Database Snapshot Listeners
+    // -------------------------------------------------------------------------
+    function listenToDatabase() {
+      // 1. หมวดหมู่ (เรียงตาม Order asc)
+      db.collection('categories').orderBy('order', 'asc').onSnapshot(snap => {
+        categories = [];
+        snap.forEach(doc => {
+          categories.push({ id: doc.id, ...doc.data() });
+        });
+        renderCategories();
+        renderCategoryCheckboxes();
+      });
+
+      // 2. ลิงก์ภายนอก (เรียงจาก A-Z)
+      db.collection('links').orderBy('order', 'asc').onSnapshot(snap => {
+        links = [];
+        snap.forEach(doc => {
+          links.push({ id: doc.id, ...doc.data() });
+        });
+        renderExternalLinks();
+      });
+
+      // 3. โพสต์หลัก (เรียงตามลำดับ Order desc)
+      db.collection('posts').orderBy('order', 'desc').onSnapshot(snap => {
+        posts = [];
+        snap.forEach(doc => {
+          posts.push({ id: doc.id, ...doc.data() });
+        });
+        renderHomePosts();
+        renderAdminPosts();
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // องค์ประกอบแถบข้างและ Grid โพสต์
+    // -------------------------------------------------------------------------
+    function renderCategories() {
+      const container = document.getElementById('sidebar-categories');
+      let html = `<a href="#" onclick="filterCategory(null)" class="${selectedCategoryId === null ? 'fw-bold' : ''} link-hover-expand">หน้าแรก</a>`;
+      categories.forEach(cat => {
+        html += `<a href="#" onclick="filterCategory('${cat.id}')" class="${selectedCategoryId === cat.id ? 'fw-bold' : ''} link-hover-expand">${cat.name}</a>`;
+      });
+      container.innerHTML = html;
+
+      const tbl = document.getElementById('tbl-admin-categories');
+      tbl.innerHTML = '';
+      categories.forEach((cat, idx) => {
+        tbl.innerHTML += `
+          <tr>
+            <td>${cat.order || (idx + 1)}</td>
+            <td><strong>${cat.name}</strong></td>
+            <td>
+              <button class="btn btn-light btn-xs p-1 hover-zoom" onclick="moveOrder('categories', '${cat.id}', 'up')"><i class="bi bi-arrow-up"></i></button>
+              <button class="btn btn-light btn-xs p-1 hover-zoom" onclick="moveOrder('categories', '${cat.id}', 'down')"><i class="bi bi-arrow-down"></i></button>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-dark hover-zoom" onclick="editCategory('${cat.id}', '${cat.name}')"><i class="bi bi-pencil-square"></i></button>
+              <button class="btn btn-sm btn-outline-danger hover-zoom" onclick="deleteCategory('${cat.id}')"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function renderExternalLinks() {
+      const container = document.getElementById('sidebar-links');
+      container.innerHTML = '';
+      
+      // แสดงลิงก์บนแถบเมนูซ้ายมือ (เรียงตาม Order asc)
+      links.forEach(link => {
+        container.innerHTML += `
+          <a href="${link.url}" target="_blank" class="ext-link link-hover-expand">
+            <i class="bi bi-link-45deg"></i>${link.name}
+          </a>
+        `;
+      });
+
+      // จัดการหน้าแอดมินสำหรับลิงก์
+      const tbl = document.getElementById('tbl-admin-links');
+      tbl.innerHTML = '';
+      links.forEach((link, idx) => {
+        tbl.innerHTML += `
+          <tr>
+            <td>${link.order || (idx + 1)}</td>
+            <td><strong>${link.name}</strong></td>
+            <td>
+              <button class="btn btn-light btn-xs p-1 hover-zoom" onclick="moveOrder('links', '${link.id}', 'up')"><i class="bi bi-arrow-up"></i></button>
+              <button class="btn btn-light btn-xs p-1 hover-zoom" onclick="moveOrder('links', '${link.id}', 'down')"><i class="bi bi-arrow-down"></i></button>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-dark hover-zoom" onclick="editLink('${link.id}', '${link.name}', '${link.url}')"><i class="bi bi-pencil-square"></i></button>
+              <button class="btn btn-sm btn-outline-danger hover-zoom" onclick="deleteLink('${link.id}')"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function renderHomePosts() {
+      const container = document.getElementById('home-posts');
+      const isLogged = auth.currentUser !== null;
+      
+      let filtered = posts;
+      if (selectedCategoryId) {
+        filtered = posts.filter(p => p.categories && p.categories.includes(selectedCategoryId));
+      }
+      
+      if (!isLogged) {
+        filtered = filtered.filter(p => p.visible !== false);
+      }
+
+      if (selectedCategoryId) {
+        const catObj = categories.find(c => c.id === selectedCategoryId);
+        document.getElementById('category-title').innerText = catObj ? catObj.name : "เนื้อหาหลัก";
+      } else {
+        document.getElementById('category-title').innerText = "ครูฎายิน ลีลา";
+      }
+
+      const totalItems = filtered.length;
+      const totalPages = Math.ceil(totalItems / homeItemsPerPage) || 1;
+      if (homeCurrentPage > totalPages) homeCurrentPage = totalPages;
+      const startIndex = (homeCurrentPage - 1) * homeItemsPerPage;
+      const paginated = filtered.slice(startIndex, startIndex + homeItemsPerPage);
+
+      renderPaginationControls('home-pagination', totalPages, homeCurrentPage, (page) => {
+        homeCurrentPage = page;
+        renderHomePosts();
+      });
+
+      container.innerHTML = '';
+      if (paginated.length === 0) {
+        container.innerHTML = `<p class="text-muted col-12">ไม่มีเนื้อหาที่เผยแพร่</p>`;
+        return;
+      }
+
+      paginated.forEach(p => {
+        const defaultThumb = 'https://placehold.co/600x400/f8f9fa/343a40?text=No+Image';
+        const imageSrc = p.topImage || defaultThumb;
+        
+        let newBadge = '';
+        if (p.createdAt) {
+          const postDate = p.createdAt.toDate ? p.createdAt.toDate() : new Date(p.createdAt);
+          const timeDiff = Date.now() - postDate.getTime();
+          if (timeDiff <= 24 * 60 * 60 * 1000) {
+            newBadge = `<span class="badge bg-danger ms-1" style="font-size: 10px;">NEW</span>`;
+          }
+        }
+
+        const snippet = p.body ? (p.body.length > 80 ? p.body.substring(0, 80) + '...' : p.body) : '';
+        const editBtn = isLogged ? `<button class="btn btn-xs btn-outline-dark w-100 py-0 mt-2 hover-zoom" style="font-size:11px;" onclick="shortcutEditPost('${p.id}')"><i class="bi bi-pencil"></i> แก้ไข</button>` : '';
+
+        container.innerHTML += `
+          <div class="post-card card-hover-expand">
+            <img src="${imageSrc}" class="img-hover-expand" alt="Thumbnail" onclick="viewPostDetail('${p.id}')">
+            <div class="post-card-body">
+              <div>
+                <h6 class="fw-bold mb-1 text-dark link-hover-expand" style="cursor: pointer; font-size: 13px;" onclick="viewPostDetail('${p.id}')">
+                  ${p.title || 'ไม่มีชื่อเรื่อง'} ${newBadge}
+                </h6>
+                <p class="text-muted mb-2" style="font-size: 11px; cursor: pointer;" onclick="viewPostDetail('${p.id}')">${snippet}</p>
+              </div>
+              <div>
+                <span class="text-muted d-block text-end" style="font-size:9px;">${p.createdAt ? formatDateTime(p.createdAt) : ''}</span>
+                ${editBtn}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // หน้ารายละเอียดเนื้อหา
+    // -------------------------------------------------------------------------
+    function viewPostDetail(id) {
+      const p = posts.find(item => item.id === id);
+      if (!p) return;
+
+      currentPostViewId = id;
+      showView('view-post-detail');
+
+      const isLogged = auth.currentUser !== null;
+      document.getElementById('detail-admin-actions').style.display = isLogged ? 'block' : 'none';
+      document.getElementById('btn-edit-post-shortcut').onclick = () => shortcutEditPost(id);
+
+      const imgWrapper = document.getElementById('detail-image-wrapper');
+      imgWrapper.innerHTML = '';
+      if (p.topImage) {
+        imgWrapper.innerHTML = `<img src="${p.topImage}" class="main-post-img img-hover-expand" alt="Main Content Image">`;
+      }
+
+      document.getElementById('detail-title').innerText = p.title || 'ไม่มีชื่อเรื่อง';
+      document.getElementById('detail-meta').innerText = p.createdAt ? `เผยแพร่เมื่อ: ${formatDateTime(p.createdAt)}` : '';
+      
+      const bodyFormatted = p.body ? p.body.replace(/\n/g, '<br>') : 'ไม่มีเนื้อหารายละเอียด';
+      document.getElementById('detail-body').innerHTML = bodyFormatted;
+
+      // จัดการภาพท้ายเนื้อหา (จัดวางเซ็นเตอร์ และไม่มีพื้นหลัง)
+      const galleryLabel = document.getElementById('lbl-gallery');
+      const bottomImagesContainer = document.getElementById('detail-bottom-images');
+      bottomImagesContainer.innerHTML = '';
+      if (p.bottomImages && p.bottomImages.length > 0 && p.bottomImages[0] !== '') {
+        galleryLabel.style.display = 'block';
+        p.bottomImages.forEach(imgUrl => {
+          if (imgUrl) {
+            bottomImagesContainer.innerHTML += `
+              <img src="${imgUrl}" alt="Gallery" onclick="expandImage('${imgUrl}')" class="img-hover-expand">
+            `;
+          }
+        });
+      } else {
+        galleryLabel.style.display = 'none';
+      }
+
+      // จัดการลิงก์อ้างอิงเพิ่มเติม
+      const refsSection = document.getElementById('detail-refs-section');
+      const refsListUl = document.getElementById('detail-refs');
+      refsListUl.innerHTML = '';
+      if (p.refs && p.refs.length > 0 && p.refs[0] !== '') {
+        refsSection.style.display = 'block';
+        p.refs.forEach(ref => {
+          if (ref) {
+            const refSnippet = ref.length > 80 ? ref.substring(0, 80) + '...' : ref;
+            refsListUl.innerHTML += `
+              <li class="mb-1">
+                <a href="${ref}" target="_blank" class="text-decoration-none text-primary word-break link-hover-expand">
+                  <i class="bi bi-link-45deg"></i> ${refSnippet}
+                </a>
+              </li>
+            `;
+          }
+        });
+      } else {
+        refsSection.style.display = 'none';
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // แผงแอดมินจัดการเนื้อหาหลัก (แสดงสูงสุดหน้าละ 10 เรื่อง)
+    // -------------------------------------------------------------------------
+    function renderAdminPosts() {
+      const tbl = document.getElementById('tbl-admin-posts');
+      tbl.innerHTML = '';
+
+      const totalItems = posts.length;
+      const totalPages = Math.ceil(totalItems / adminItemsPerPage) || 1;
+      if (adminPostCurrentPage > totalPages) adminPostCurrentPage = totalPages;
+      const startIndex = (adminPostCurrentPage - 1) * adminItemsPerPage;
+      const paginated = posts.slice(startIndex, startIndex + adminItemsPerPage);
+
+      renderPaginationControls('admin-post-pagination', totalPages, adminPostCurrentPage, (page) => {
+        adminPostCurrentPage = page;
+        renderAdminPosts();
+      });
+
+      paginated.forEach((p, idx) => {
+        const orderNo = p.order || (posts.length - (startIndex + idx));
+        tbl.innerHTML += `
+          <tr>
+            <td>${orderNo}</td>
+            <td>
+              <strong class="small text-dark d-block text-truncate" style="max-width:200px;">${p.title || 'ไม่มีชื่อเรื่อง'}</strong>
+              <span class="text-muted" style="font-size: 10px;">${p.createdAt ? formatDateTime(p.createdAt) : ''}</span>
+            </td>
+            <td>
+              <span class="badge ${p.visible !== false ? 'bg-success' : 'bg-secondary'}">${p.visible !== false ? 'แสดง' : 'ซ่อน'}</span>
+            </td>
+            <td>
+              <!-- ปุ่มสลับลำดับอิสระสำหรับหน้าจัดการเนื้อหา -->
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-light btn-xs p-1 hover-zoom" onclick="moveOrder('posts', '${p.id}', 'up')" title="สลับขึ้น"><i class="bi bi-arrow-up"></i></button>
+                <button class="btn btn-light btn-xs p-1 hover-zoom" onclick="moveOrder('posts', '${p.id}', 'down')" title="สลับลง"><i class="bi bi-arrow-down"></i></button>
+              </div>
+            </td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-dark hover-zoom" onclick="viewPostDetail('${p.id}')" title="ดูหน้าจริง"><i class="bi bi-eye"></i></button>
+                <button class="btn btn-outline-dark hover-zoom" onclick="editPost('${p.id}')" title="แก้ไขฟอร์ม"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-outline-danger hover-zoom" onclick="deletePost('${p.id}')" title="ลบถาวร"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // ฟังก์ชันย่อย CRUD และ Reordering
+    // -------------------------------------------------------------------------
+    
+    // จัดการย้ายสลับลำดับใน Firestore สำหรับโครงสร้าง DESC (สลับตำแหน่งขึ้น-ลงได้จริง)
+    async function moveOrder(collection, id, direction) {
+      try {
+        const snap = await db.collection(collection).orderBy('order', 'asc').get();
+        const list = [];
+        snap.forEach(doc => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+
+        const idx = list.findIndex(item => item.id === id);
+        if (idx === -1) return;
+
+        if (direction === 'up') {
+          // หากเรียงลำดับ Order Descending: ย้ายขึ้น (ไปหา index ที่น้อยกว่า) แปลว่าเราสลับค่า Order กับ index - 1
+          if (idx > 0) {
+            const currentItem = list[idx];
+            const targetItem = list[idx - 1];
+            
+            const tempOrder = currentItem.order || 1;
+            await db.collection(collection).doc(currentItem.id).update({ order: targetItem.order || 0 });
+            await db.collection(collection).doc(targetItem.id).update({ order: tempOrder });
+          }
+        } else if (direction === 'down') {
+          // ย้ายลง แปลว่าเราสลับค่า Order กับ index + 1
+          if (idx < list.length - 1) {
+            const currentItem = list[idx];
+            const targetItem = list[idx + 1];
+            
+            const tempOrder = currentItem.order || 1;
+            await db.collection(collection).doc(currentItem.id).update({ order: nextItem.order || 2 });
+            await db.collection(collection).doc(targetItem.id).update({ order: tempOrder });
+          }
+        }
+        
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'สลับลำดับเรียบร้อยแล้ว',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } catch (err) {
+        Swal.fire('ข้อผิดพลาด', 'ไม่สามารถสลับลำดับได้: ' + err.message, 'error');
+      }
+    }
+
+    // บันทึกข้อมูลและล้างฟอร์มอัตโนมัติ (กรอกไม่ครบก็บันทึกได้)
+    async function savePost() {
+      const id = document.getElementById('post-id').value;
+      const title = document.getElementById('post-title').value.trim();
+      const body = document.getElementById('post-body').value;
+      const topImage = document.getElementById('post-top-image').value.trim();
+      const visible = document.getElementById('post-visible').checked;
+
+      const bImageInputs = document.querySelectorAll('.bottom-image-url');
+      const bottomImages = [];
+      bImageInputs.forEach(inp => { if (inp.value) bottomImages.push(inp.value.trim()); });
+
+      const refInputs = document.querySelectorAll('.ref-url');
+      const refs = [];
+      refInputs.forEach(inp => { if (inp.value) refs.push(inp.value.trim()); });
+
+      const selectedCats = [];
+      const checkboxes = document.querySelectorAll('.post-cat-checkbox');
+      checkboxes.forEach(chk => {
+        if (chk.checked) selectedCats.push(chk.value);
+      });
+
+      const payload = {
+        title,
+        body,
+        topImage,
+        bottomImages,
+        refs,
+        categories: selectedCats,
+        visible,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        if (id) {
+          await db.collection('posts').doc(id).update(payload);
+          Swal.fire('สำเร็จ', 'แก้ไขข้อมูลเนื้อหาเรียบร้อยแล้ว', 'success');
+        } else {
+          // คำนวณลำดับแบบเรียงออโต้
+          const snap = await db.collection('posts').orderBy('order', 'desc').limit(1).get();
+          let nextOrder = 1;
+          if (!snap.empty) {
+            nextOrder = (snap.docs[0].data().order || 0) + 1;
+          }
+          payload.order = nextOrder;
+          payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+          await db.collection('posts').add(payload);
+          Swal.fire('สำเร็จ', 'บันทึกบทความสำเร็จแล้ว', 'success');
+        }
+        resetPostForm(); // ล้างฟอร์มอัตโนมัติหลังจากบันทึกเรียบร้อยตามเงื่อนไขข้อสั่งการ
+      } catch (e) {
+        Swal.fire('ล้มเหลว', 'เกิดข้อผิดพลาดในการบันทึก: ' + e.message, 'error');
+      }
+    }
+
+    function editPost(id) {
+      const p = posts.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById('post-id').value = id;
+      document.getElementById('post-title').value = p.title || '';
+      document.getElementById('post-body').value = p.body || '';
+      document.getElementById('post-top-image').value = p.topImage || '';
+      document.getElementById('post-visible').checked = p.visible !== false;
+
+      document.getElementById('post-bottom-images-container').innerHTML = '';
+      if (p.bottomImages) {
+        p.bottomImages.forEach(url => addBottomImageInput(url));
+      }
+
+      document.getElementById('post-refs-container').innerHTML = '';
+      if (p.refs) {
+        p.refs.forEach(url => addRefInput(url));
+      }
+
+      const checkboxes = document.querySelectorAll('.post-cat-checkbox');
+      checkboxes.forEach(chk => {
+        chk.checked = p.categories && p.categories.includes(chk.value);
+      });
+    }
+
+    function deletePost(id) {
+      Swal.fire({
+        title: 'ยืนยันการลบโพสต์หลัก?',
+        text: 'กระบวนการนี้จะลบรูปภาพแนบท้าย และลิงก์เชื่อมโยงทั้งหมดทันที',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'ยืนยันลบ',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#212529'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await db.collection('posts').doc(id).delete();
+          Swal.fire('สำเร็จ', 'ลบข้อมูลเรียบร้อยแล้ว', 'success');
+        }
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // CRUD หมวดหมู่และลิงก์ภายนอก
+    // -------------------------------------------------------------------------
+    async function saveCategory() {
+      const id = document.getElementById('category-id').value;
+      const name = document.getElementById('category-name').value.trim();
+      if (!name) return;
+
+      try {
+        if (id) {
+          await db.collection('categories').doc(id).update({ name });
+          Swal.fire('สำเร็จ', 'แก้ไขหมวดหมู่เรียบร้อย', 'success');
+        } else {
+          const snap = await db.collection('categories').orderBy('order', 'desc').limit(1).get();
+          let nextOrder = 1;
+          if (!snap.empty) {
+            nextOrder = (snap.docs[0].data().order || 0) + 1;
+          }
+          await db.collection('categories').add({ name, order: nextOrder });
+          Swal.fire('สำเร็จ', 'เพิ่มหมวดหมู่ใหม่เรียบร้อย', 'success');
+        }
+        resetCategoryForm();
+      } catch (e) {
+        Swal.fire('ผิดพลาด', 'บันทึกหมวดหมู่ล้มเหลว', 'error');
+      }
+    }
+
+    function editCategory(id, name) {
+      document.getElementById('category-id').value = id;
+      document.getElementById('category-name').value = name;
+    }
+
+    function deleteCategory(id) {
+      Swal.fire({
+        title: 'ยืนยันลบหมวดหมู่ย่อย?',
+        text: 'การลบนี้จะทำให้หมวดหมู่สูญหายจากสารบบทันที',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'ยืนยันลบ',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#212529'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await db.collection('categories').doc(id).delete();
+          Swal.fire('เรียบร้อย', 'ลบหมวดหมู่สำเร็จ', 'success');
+        }
+      });
+    }
+
+    async function saveLink() {
+      const id = document.getElementById('link-id').value;
+      const name = document.getElementById('link-name').value.trim();
+      const url = document.getElementById('link-url').value.trim();
+      if (!name || !url) return;
+
+      try {
+        if (id) {
+          await db.collection('links').doc(id).update({ name, url });
+          Swal.fire('สำเร็จ', 'แก้ไขลิงก์เรียบร้อย', 'success');
+        } else {
+          const snap = await db.collection('links').orderBy('order', 'desc').limit(1).get();
+          let nextOrder = 1;
+          if (!snap.empty) {
+            nextOrder = (snap.docs[0].data().order || 0) + 1;
+          }
+          await db.collection('links').add({ name, url, order: nextOrder });
+          Swal.fire('สำเร็จ', 'เพิ่มลิงก์ภายนอกเรียบร้อยแล้ว', 'success');
+        }
+        resetLinkForm();
+      } catch (e) {
+        Swal.fire('ผิดพลาด', 'บันทึกข้อมูลลิงก์ล้มเหลว', 'error');
+      }
+    }
+
+    function editLink(id, name, url) {
+      document.getElementById('link-id').value = id;
+      document.getElementById('link-name').value = name;
+      document.getElementById('link-url').value = url;
+    }
+
+    // -------------------------------------------------------------------------
+    // Utilities & Forms
+    // -------------------------------------------------------------------------
+    function addBottomImageInput(value = '') {
+      const container = document.getElementById('post-bottom-images-container');
+      const div = document.createElement('div');
+      div.className = 'input-group mb-1';
+      div.innerHTML = `
+        <input type="url" class="form-control form-control-sm bottom-image-url" placeholder="https://" value="${value}">
+        <button class="btn btn-danger btn-sm" type="button" onclick="this.parentElement.remove()">-</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function addRefInput(value = '') {
+      const container = document.getElementById('post-refs-container');
+      const div = document.createElement('div');
+      div.className = 'input-group mb-1';
+      div.innerHTML = `
+        <input type="url" class="form-control form-control-sm ref-url" placeholder="https://" value="${value}">
+        <button class="btn btn-danger btn-sm" type="button" onclick="this.parentElement.remove()">-</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function renderCategoryCheckboxes() {
+      const container = document.getElementById('post-category-checkboxes');
+      container.innerHTML = '';
+      categories.forEach(cat => {
+        container.innerHTML += `
+          <div class="form-check">
+            <input class="form-check-input post-cat-checkbox" type="checkbox" value="${cat.id}" id="chk-${cat.id}">
+            <label class="form-check-label small" for="chk-${cat.id}">
+              ${cat.name}
+            </label>
+          </div>
+        `;
+      });
+    }
+
+    function resetPostForm() {
+      document.getElementById('form-post').reset();
+      document.getElementById('post-id').value = '';
+      document.getElementById('post-bottom-images-container').innerHTML = '';
+      document.getElementById('post-refs-container').innerHTML = '';
+      const checkboxes = document.querySelectorAll('.post-cat-checkbox');
+      checkboxes.forEach(chk => chk.checked = false);
+    }
+
+    function resetCategoryForm() {
+      document.getElementById('form-category').reset();
+      document.getElementById('category-id').value = '';
+    }
+
+    function resetLinkForm() {
+      document.getElementById('form-link').reset();
+      document.getElementById('link-id').value = '';
+    }
+
+    function shortcutEditPost(id) {
+      showAdmin();
+      const firstTabEl = document.querySelector('#adminTabs button[data-bs-target="#tab-posts"]');
+      const tab = new bootstrap.Tab(firstTabEl);
+      tab.show();
+      editPost(id);
+    }
+
+    // -------------------------------------------------------------------------
+    // ปรับเปลี่ยนธีม (Theme Management)
+    // -------------------------------------------------------------------------
+    function previewTheme() {
+      const root = document.documentElement;
+
+      const fontFamily = document.getElementById('cust-font-family').value;
+      const widthPct = document.getElementById('cust-width-pct').value || "100";
+      const maxWidth = document.getElementById('cust-max-width').value || "1600";
+      const bgImg = document.getElementById('cust-bg-img').value;
+      const bgOpacity = document.getElementById('cust-bg-opacity').value || "1";
+      const webBg = document.getElementById('cust-web-bg').value;
+      const menuBg = document.getElementById('cust-menu-bg').value;
+      const menuText = document.getElementById('cust-menu-text').value;
+      const headerColor = document.getElementById('cust-header-color').value;
+      const footerBg = document.getElementById('cust-footer-bg').value;
+      const footerText = document.getElementById('cust-footer-text').value;
+      const hover = document.getElementById('cust-hover').value;
+
+      const sizeBody = document.getElementById('cust-size-body').value || "14";
+      const sizeTitle = document.getElementById('cust-size-title').value || "18";
+      const sizeDetail = document.getElementById('cust-size-detail').value || "14";
+      const sizeLink = document.getElementById('cust-size-link').value || "14";
+      const sizeMenu = document.getElementById('cust-size-menu').value || "14";
+      const sizeFooter = document.getElementById('cust-size-footer').value || "11";
+
+      const heightMain = document.getElementById('cust-height-main').value || "550";
+      const heightBottom = document.getElementById('cust-height-bottom').value || "500";
+
+      root.style.setProperty('--font-family', `'${fontFamily}', sans-serif`);
+      root.style.setProperty('--container-width-pct', widthPct + '%');
+      root.style.setProperty('--container-max-width', maxWidth + 'px');
+      root.style.setProperty('--bg-img-url', bgImg ? `url(${bgImg})` : 'none');
+      root.style.setProperty('--bg-img-opacity', bgOpacity);
+      root.style.setProperty('--web-bg-color', webBg);
+      root.style.setProperty('--menu-bg-color', menuBg);
+      root.style.setProperty('--menu-text-color', menuText);
+      root.style.setProperty('--header-text-color', headerColor);
+      root.style.setProperty('--footer-bg-custom', footerBg);
+      root.style.setProperty('--color-footer', footerText);
+      root.style.setProperty('--color-hover', hover);
+
+      root.style.setProperty('--body-font-size', sizeBody + 'px');
+      root.style.setProperty('--content-title-font-size', sizeTitle + 'px');
+      root.style.setProperty('--content-body-font-size', sizeDetail + 'px');
+      root.style.setProperty('--link-font-size', sizeLink + 'px');
+      root.style.setProperty('--menu-font-size', sizeMenu + 'px');
+      root.style.setProperty('--footer-font-size', sizeFooter + 'px');
+
+      root.style.setProperty('--main-img-height', heightMain + 'px');
+      root.style.setProperty('--bottom-img-height', heightBottom + 'px');
+    }
+
+    async function loadThemeSettings() {
+      try {
+        const doc = await db.collection('settings').doc('theme').get();
+        if (doc.exists) {
+          currentTheme = doc.data();
+          fillThemeInputs(currentTheme);
+        } else {
+          currentTheme = { ...defaultSettings };
+          fillThemeInputs(defaultSettings);
+        }
+        previewTheme();
+      } catch (e) {
+        fillThemeInputs(defaultSettings);
+        previewTheme();
+      }
+    }
+
+    function fillThemeInputs(theme) {
+      document.getElementById('cust-font-family').value = theme.fontFamily || defaultSettings.fontFamily;
+      document.getElementById('cust-width-pct').value = theme.widthPct || defaultSettings.widthPct;
+      document.getElementById('cust-max-width').value = theme.maxWidth || defaultSettings.maxWidth;
+      document.getElementById('cust-bg-img').value = theme.bgImg || defaultSettings.bgImg;
+      document.getElementById('cust-bg-opacity').value = theme.bgOpacity || defaultSettings.bgOpacity;
+      document.getElementById('cust-web-bg').value = theme.webBgColor || defaultSettings.webBgColor;
+      document.getElementById('cust-menu-bg').value = theme.menuBgColor || defaultSettings.menuBgColor;
+      document.getElementById('cust-menu-text').value = theme.menuTextColor || defaultSettings.menuTextColor;
+      document.getElementById('cust-header-color').value = theme.headerTextColor || defaultSettings.headerTextColor;
+      document.getElementById('cust-footer-bg').value = theme.footerBg || defaultSettings.footerBg;
+      document.getElementById('cust-footer-text').value = theme.footerTextColor || defaultSettings.footerTextColor;
+      document.getElementById('cust-hover').value = theme.hoverColor || defaultSettings.hoverColor;
+
+      document.getElementById('cust-size-body').value = theme.sizeBody || defaultSettings.sizeBody;
+      document.getElementById('cust-size-title').value = theme.sizeTitle || defaultSettings.sizeTitle;
+      document.getElementById('cust-size-detail').value = theme.sizeDetail || defaultSettings.sizeDetail;
+      document.getElementById('cust-size-link').value = theme.sizeLink || defaultSettings.sizeLink;
+      document.getElementById('cust-size-menu').value = theme.sizeMenu || defaultSettings.sizeMenu;
+      document.getElementById('cust-size-footer').value = theme.sizeFooter || defaultSettings.sizeFooter;
+
+      document.getElementById('cust-height-main').value = theme.heightMain || defaultSettings.heightMain;
+      document.getElementById('cust-height-bottom').value = theme.heightBottom || defaultSettings.heightBottom;
+    }
+
+    async function saveThemeSettings() {
+      const themePayload = {
+        fontFamily: document.getElementById('cust-font-family').value,
+        widthPct: document.getElementById('cust-width-pct').value,
+        maxWidth: document.getElementById('cust-max-width').value,
+        bgImg: document.getElementById('cust-bg-img').value,
+        bgOpacity: document.getElementById('cust-bg-opacity').value,
+        webBgColor: document.getElementById('cust-web-bg').value,
+        menuBgColor: document.getElementById('cust-menu-bg').value,
+        menuTextColor: document.getElementById('cust-menu-text').value,
+        headerTextColor: document.getElementById('cust-header-color').value,
+        footerBg: document.getElementById('cust-footer-bg').value,
+        footerTextColor: document.getElementById('cust-footer-text').value,
+        hoverColor: document.getElementById('cust-hover').value,
+
+        sizeBody: document.getElementById('cust-size-body').value,
+        sizeTitle: document.getElementById('cust-size-title').value,
+        sizeDetail: document.getElementById('cust-size-detail').value,
+        sizeLink: document.getElementById('cust-size-link').value,
+        sizeMenu: document.getElementById('cust-size-menu').value,
+        sizeFooter: document.getElementById('cust-size-footer').value,
+
+        heightMain: document.getElementById('cust-height-main').value,
+        heightBottom: document.getElementById('cust-height-bottom').value,
+      };
+
+      try {
+        await db.collection('settings').doc('theme').set(themePayload);
+        Swal.fire('สำเร็จ', 'บันทึกการตั้งค่าพารามิเตอร์แล้ว', 'success');
+        currentTheme = themePayload;
+        previewTheme();
+      } catch (e) {
+        Swal.fire('ผิดพลาด', 'บันทึกล้มเหลว', 'error');
+      }
+    }
+
+    function resetThemeToDefault() {
+      Swal.fire({
+        title: 'ยืนยันคืนค่าดีฟอลต์ดั้งเดิม?',
+        text: 'กระบวนการนี้จะล้างการตั้งค่าปัจจุบัน',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'ยืนยัน',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#212529'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          fillThemeInputs(defaultSettings);
+          previewTheme();
+          await db.collection('settings').doc('theme').set(defaultSettings);
+          Swal.fire('เรียบร้อย', 'คืนค่าพารามิเตอร์เริ่มต้นแล้ว', 'success');
+        }
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // CSV Import / Export Logic (UTF-8 with BOM)
+    // -------------------------------------------------------------------------
+    function exportDataToCSV(type) {
+      let csvContent = "\uFEFF"; 
+      let headers = [];
+      let rows = [];
+
+      if (type === 'posts') {
+        headers = ['id', 'title', 'body', 'topImage', 'bottomImages', 'refs', 'categories', 'visible', 'order'];
+        posts.forEach(p => {
+          rows.push([
+            p.id,
+            p.title || '',
+            p.body || '',
+            p.topImage || '',
+            p.bottomImages ? p.bottomImages.join(';') : '',
+            p.refs ? p.refs.join(';') : '',
+            p.categories ? p.categories.join(';') : '',
+            p.visible !== false ? 'true' : 'false',
+            p.order || ''
+          ]);
+        });
+      } else if (type === 'categories') {
+        headers = ['id', 'name', 'order'];
+        categories.forEach(c => {
+          rows.push([c.id, c.name || '', c.order || '']);
+        });
+      } else if (type === 'links') {
+        headers = ['id', 'name', 'url', 'order'];
+        links.forEach(l => {
+          rows.push([l.id, l.name || '', l.url || '', l.order || '']);
+        });
+      }
+
+      csvContent += headers.join(',') + '\r\n';
+      rows.forEach(row => {
+        const rowEscaped = row.map(val => {
+          let str = String(val);
+          str = str.replace(/"/g, '""');
+          if (str.includes(',') || str.includes('\n') || str.includes('"')) {
+            str = `"${str}"`;
+          }
+          return str;
+        });
+        csvContent += rowEscaped.join(',') + '\r\n';
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", `export_${type}_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function importCSVData() {
+      const fileInput = document.getElementById('import-file-input');
+      const type = document.getElementById('import-type').value;
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        Swal.fire('แจ้งเตือน', 'กรุณาเลือกไฟล์ .csv', 'info');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      
+      reader.onload = async function(e) {
+        const text = e.target.result;
+        try {
+          const rows = parseCSV(text);
+          if (rows.length < 2) {
+            Swal.fire('ข้อผิดพลาด', 'ไฟล์นำเข้าไม่มีข้อมูลแถว', 'error');
+            return;
+          }
+
+          const headers = rows[0];
+          let importCount = 0;
+
+          for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (row.length < headers.length) continue;
+            
+            const item = {};
+            headers.forEach((h, idx) => {
+              item[h.trim()] = row[idx];
+            });
+
+            if (type === 'posts') {
+              const payload = {
+                title: item.title || '',
+                body: item.body || '',
+                topImage: item.topImage || '',
+                bottomImages: item.bottomImages ? item.bottomImages.split(';') : [],
+                refs: item.refs ? item.refs.split(';') : [],
+                categories: item.categories ? item.categories.split(';') : [],
+                visible: item.visible === 'true',
+                order: parseInt(item.order) || i,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              };
+              if (item.id) {
+                await db.collection('posts').doc(item.id).set(payload, { merge: true });
+              } else {
+                await db.collection('posts').add(payload);
+              }
+            } else if (type === 'categories') {
+              const payload = {
+                name: item.name || '',
+                order: parseInt(item.order) || i
+              };
+              if (item.id) {
+                await db.collection('categories').doc(item.id).set(payload, { merge: true });
+              } else {
+                await db.collection('categories').add(payload);
+              }
+            } else if (type === 'links') {
+              const payload = {
+                name: item.name || '',
+                url: item.url || '',
+                order: parseInt(item.order) || i
+              };
+              if (item.id) {
+                await db.collection('links').doc(item.id).set(payload, { merge: true });
+              } else {
+                await db.collection('links').add(payload);
+              }
+            }
+            importCount++;
+          }
+
+          Swal.fire('นำเข้าสำเร็จ', `ประมวลผลเพิ่ม/อัปเดตไปทั้งสิ้น ${importCount} รายการ`, 'success');
+          fileInput.value = '';
+        } catch (err) {
+          Swal.fire('ล้มเหลว', 'กระบวนการแปลงไฟล์ขัดข้อง: ' + err.message, 'error');
+        }
+      };
+
+      reader.readAsText(file, 'UTF-8');
+    }
+
+    function parseCSV(text) {
+      let lines = [];
+      let row = [""];
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        let c = text[i];
+        let next = text[i+1];
+        if (c === '"') {
+          if (inQuotes && next === '"') { row[row.length - 1] += '"'; i++; }
+          else { inQuotes = !inQuotes; }
+        } else if (c === ',' && !inQuotes) {
+          row.push('');
+        } else if ((c === '\r' || c === '\n') && !inQuotes) {
+          if (c === '\r' && next === '\n') { i++; }
+          lines.push(row);
+          row = [''];
+        } else {
+          row[row.length - 1] += c;
+        }
+      }
+      if (row.length > 1 || row[0] !== '') {
+        lines.push(row);
+      }
+      return lines;
+    }
+
+    // -------------------------------------------------------------------------
+    // ฟังก์ชันเข้าสู่ระบบ
+    // -------------------------------------------------------------------------
+    async function openLoginModal() {
+      if (auth.currentUser) {
+        showAdmin();
+        return;
+      }
+
+      const { value: formValues } = await Swal.fire({
+        title: 'ผู้ดูแลระบบเข้าสู่ระบบ',
+        html: `
+          <div class="mb-2">
+            <input id="swal-email" type="email" class="form-control" placeholder="อีเมลล็อกอิน">
+          </div>
+          <div>
+            <input id="swal-password" type="password" class="form-control" placeholder="รหัสผ่านเข้าใช้">
+          </div>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'เข้าใช้',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#212529',
+        preConfirm: () => {
+          return {
+            email: document.getElementById('swal-email').value,
+            pass: document.getElementById('swal-password').value
+          };
+        }
+      });
+
+      if (formValues) {
+        const { email, pass } = formValues;
+        if (!email || !pass) {
+          Swal.fire('แจ้งเตือน', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'info');
+          return;
+        }
+
+        try {
+          await auth.signInWithEmailAndPassword(email, pass);
+          Swal.fire('สำเร็จ', 'ยินดีต้อนรับเข้าใช้งานหลังบ้าน', 'success');
+          showAdmin();
+        } catch (err) {
+          Swal.fire('ล้มเหลว', 'ล็อกอินขัดข้อง: ' + err.message, 'error');
+        }
+      }
+    }
+
+    async function logout() {
+      await auth.signOut();
+      Swal.fire('ออกจากระบบเรียบร้อย', 'สถานะปัจจุบันเปลี่ยนเป็นบุคคลทั่วไป', 'info');
+      showHome();
+    }
+
+    // -------------------------------------------------------------------------
+    // Utilities & Navigation
+    // -------------------------------------------------------------------------
+    function formatDateTime(firebaseTimestamp) {
+      if (!firebaseTimestamp) return '';
+      const date = firebaseTimestamp.toDate ? firebaseTimestamp.toDate() : new Date(firebaseTimestamp);
+      return date.toLocaleString('th-TH', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }) + ' น.';
+    }
+
+    function renderPaginationControls(containerId, totalPages, currentPage, onPageChangeClick) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      if (totalPages <= 1) return;
+
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'btn btn-outline-dark btn-xs px-2 py-0';
+      prevBtn.innerHTML = '<i class="bi bi-chevron-left"></i>';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => onPageChangeClick(currentPage - 1);
+      container.appendChild(prevBtn);
+
+      const textSpan = document.createElement('span');
+      textSpan.className = 'align-self-center mx-1 small text-muted';
+      textSpan.innerText = `หน้า ${currentPage}/${totalPages}`;
+      container.appendChild(textSpan);
+
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'btn btn-outline-dark btn-xs px-2 py-0';
+      nextBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => onPageChangeClick(currentPage + 1);
+      container.appendChild(nextBtn);
+    }
+
+    function expandImage(url) {
+      Swal.fire({
+        imageUrl: url,
+        imageAlt: 'ขยายรูปภาพ',
+        showCloseButton: true,
+        showConfirmButton: false,
+        background: '#ffffff',
+        width: 'auto',
+        maxWidth: '85%'
+      });
+    }
+
+    function showHome() {
+      showView('view-home');
+    }
+
+    function showAdmin() {
+      if (!auth.currentUser) {
+        Swal.fire('ปฏิเสธการเข้าถึง', 'กรุณาล็อกอินเป็นผู้ดูแลระบบก่อนเข้าใช้งาน', 'error');
+        return;
+      }
+      showView('view-admin');
+    }
+
+    function filterCategory(catId) {
+      selectedCategoryId = catId;
+      homeCurrentPage = 1; 
+      showHome();
+      renderHomePosts();
+      renderCategories(); 
+    }
+
+    function showView(viewId) {
+      document.getElementById('view-home').style.display = 'none';
+      document.getElementById('view-post-detail').style.display = 'none';
+      document.getElementById('view-admin').style.display = 'none';
+
+      document.getElementById(viewId).style.display = 'block';
+    }
+  </script>
+</body>
+</html>
